@@ -3,20 +3,26 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.qyf404</groupId>
     <artifactId>learn-maven</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-    <profiles></profiles>
-
-    <properties>
-        <jdbc.url></jdbc.url>
-        <jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>
-    </properties>
-
-
+    <!--<properties>-->
+    <!--<jdbc.driverClassName>com.mysql.jdbc.Driver</jdbc.driverClassName>-->
+    <!--<jdbc.url>jdbc:mysql://localhost/stock?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true</jdbc.url>-->
+    <!--<jdbc.username>root</jdbc.username>-->
+    <!--<jdbc.password></jdbc.password>-->
+    <!--<jdbc.validationQuery>SELECT 1 + 1</jdbc.validationQuery>-->
+    <!--</properties>-->
     <build>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>${project.basedir}/src/main/resources</directory>
+                <includes>
+                    <include>*.properties</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -28,18 +34,51 @@
                         <phase>initialize</phase>
                         <goals>
                             <goal>read-project-properties</goal>
+                            <goal>write-project-properties</goal>
                         </goals>
                         <configuration>
-
                             <files>
-                                <file>${user.dir}/profiles/dev/jdbc.properties</file>
+                                <!--<file>${user.dir}/profiles/dev/my.properties</file>-->
+                                <file>${user.dir}/profiles/${profile.id}/my.properties</file>
                             </files>
+                            <outputFile>${build.directory}/profile.properties</outputFile>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
-
-
     </build>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <profile.id>dev</profile.id>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                    <version>5.1.31</version>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <profile.id>test</profile.id>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                    <version>2.2.6</version>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 </project>
