@@ -1,15 +1,12 @@
 package com.qyf404.learn.maven;
 
-import java.util.Random;
-
-public class App {
+public class App2 {
 
     public int add(int a, int b) {
-        boolean tag = new Random().nextBoolean();
-        if(tag){
-            a += 1;
-        }else {
-            a += 2;
+        if(true){
+            int c = 1;
+        }else{
+            int d = 2;
         }
         return a + b;
     }

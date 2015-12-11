@@ -8,53 +8,82 @@
     <artifactId>learn-maven</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <profiles></profiles>
     <properties>
-        <!--配置是否跳过测试用例执行-->
-        <!--<skipTests>false</skipTests>-->
-        <!--<maven.test.skip>false</maven.test.skip>-->
+        <cobertura.skip>true</cobertura.skip>
     </properties>
 
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19</version>
-                <!--
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.surefire</groupId>
-                        <artifactId>surefire-junit4</artifactId>
-                        <version>2.19</version>
-                    </dependency>
-                </dependencies>
-                -->
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
                 <configuration>
-                    <groups>com.qyf404.learn.maven.FastTests</groups>
-                    <!--多线程执行测试用例-->
+                    <!--<skip>true</skip>-->
+                    <check>
+                        <!--每个类的分支覆盖率-->
+                        <branchRate>85</branchRate>
+                        <!--每个类的代码行覆盖率-->
+                        <lineRate>85</lineRate>
+                        <!--校验失败则中止.即为true时如果校验失败则打包执行失败,反之则只是打出告警日志-->
+                        <haltOnFailure>false</haltOnFailure>
+                        <!--整体的分支覆盖率-->
+                        <totalBranchRate>85</totalBranchRate>
+                        <!--整体的代码行覆盖率-->
+                        <totalLineRate>85</totalLineRate>
+                        <!--每个包的分支行覆盖率-->
+                        <packageBranchRate>85</packageBranchRate>
+                        <!--每个包的代码行覆盖率-->
+                        <packageLineRate>85</packageLineRate>
+                    </check>
                     <!--
-                    <parallel>methods</parallel>
-                    <threadCount>10</threadCount>
+                    <instrumentation>
+                        <ignores>
+                            <ignore>com.qyf404.learn.maven.App</ignore>
+                        </ignores>
+                        <excludes>
+                            <exclude>com/qyf404/learn/**</exclude>
+                        </excludes>
+                    </instrumentation>
                     -->
-                    <!--配置是否跳过测试用例执行-->
-                    <!--<skipTests>true</skipTests>-->
-                    <!--测试用例重试次数-->
-                    <!--<rerunFailingTestsCount>2</rerunFailingTestsCount>-->
-                    <!--如果有测试用例执行失败,则跳过其他测试用例-->
-                    <!--<skipAfterFailureCount>2</skipAfterFailureCount>-->
-                    <!--
-                    <includes>
-                        <include>%regex[.*2Test.class]</include>
-                    </includes>
-                    <excludes>
-                        <exclude>**/*2Test.java</exclude>
-                    </excludes>
-                    -->
+                    <!--<format>xml</format>-->
+                    <formats>
+                        <format>xml</format>
+                        <format>html</format>
+                    </formats>
                 </configuration>
+                <!--
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>clean</goal>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                    </execution>
+                </executions>
+                -->
+
             </plugin>
         </plugins>
     </build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>cobertura-integration-test</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <dependencies>
         <dependency>
@@ -63,7 +92,5 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
 </project>
