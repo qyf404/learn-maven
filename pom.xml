@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <cobertura.skip>true</cobertura.skip>
+        <!--<cobertura.skip>true</cobertura.skip>-->
     </properties>
 
     <build>
