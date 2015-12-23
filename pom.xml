@@ -15,76 +15,45 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.7</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.0.0</version>
                 <configuration>
                     <!--<skip>true</skip>-->
-                    <check>
-                        <!--每个类的分支覆盖率-->
-                        <branchRate>85</branchRate>
-                        <!--每个类的代码行覆盖率-->
-                        <lineRate>85</lineRate>
-                        <!--校验失败则中止.即为true时如果校验失败则打包执行失败,反之则只是打出告警日志-->
-                        <haltOnFailure>false</haltOnFailure>
-                        <!--整体的分支覆盖率-->
-                        <totalBranchRate>85</totalBranchRate>
-                        <!--整体的代码行覆盖率-->
-                        <totalLineRate>85</totalLineRate>
-                        <!--每个包的分支行覆盖率-->
-                        <packageBranchRate>85</packageBranchRate>
-                        <!--每个包的代码行覆盖率-->
-                        <packageLineRate>85</packageLineRate>
-                    </check>
-                    <!--
-                    <instrumentation>
-                        <ignores>
-                            <ignore>com.qyf404.learn.maven.App</ignore>
-                        </ignores>
-                        <excludes>
-                            <exclude>com/qyf404/learn/**</exclude>
-                        </excludes>
-                    </instrumentation>
-                    -->
-                    <!--<format>xml</format>-->
-                    <formats>
-                        <format>xml</format>
-                        <format>html</format>
-                    </formats>
+                    <!--<failOnError>false</failOnError>-->
+                    <!--当配置true时,只清理filesets里的文件,构建目录中得文件不被清理.默认是flase.-->
+                    <excludeDefaultDirectories>false</excludeDefaultDirectories>
+                    <filesets>
+                        <fileset>
+                            <!--要清理的目录位置-->
+                            <directory>${basedir}/logs</directory>
+                            <!--是否跟随符号链接 (symbolic links)-->
+                            <followSymlinks>false</followSymlinks>
+                            <!--默认有些文件是不会被清理的,比如.svn文件.如果设置成false,则全部按照自定义的来处理.-->
+                            <useDefaultExcludes>true</useDefaultExcludes>
+                            <!--对这些文件进行清理-->
+                            <includes>
+                                <include>**/*</include>
+                            </includes>
+                            <!--对这些文件不清理-->
+                            <excludes>
+                                <exclude>nc*</exclude>
+                            </excludes>
+                        </fileset>
+                    </filesets>
                 </configuration>
-                <!--
                 <executions>
                     <execution>
+                        <id>auto-clean</id>
+                        <phase>initialize</phase>
                         <goals>
                             <goal>clean</goal>
-                            <goal>check</goal>
                         </goals>
-                        <phase>prepare-package</phase>
                     </execution>
                 </executions>
-                -->
-
             </plugin>
         </plugins>
     </build>
-<!--
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.7</version>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>cobertura-integration-test</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
--->
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
